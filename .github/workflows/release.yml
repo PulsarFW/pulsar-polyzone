@@ -1,0 +1,47 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install zip
+        run: sudo apt install zip
+
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      - name: Bundle files
+        run: |
+          mkdir -p ./temp/pulsar-polyzone
+          rsync -a --exclude='.git/' --exclude='.github/' . ./temp/pulsar-polyzone/
+          cd ./temp && zip -r ../pulsar-polyzone.zip ./pulsar-polyzone
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "PULSAR-POLYZONE ${{ github.ref_name }}"
+          body: |
+            ![Pulsar Framework](https://r2.fivemanage.com/GPYOH8Hq4GPyAY7czrgLe/pulsarbanner.png)
+
+            ## PULSAR-POLYZONE ${{ github.ref_name }}
+
+            Polygon, box, circle, and entity zone system for Pulsar Framework.
+
+            ### Installation
+            1. Download `pulsar-polyzone.zip` below
+            2. Extract into your server's `resources` folder
+            3. Add `ensure pulsar-polyzone` to your `server.cfg`
+
+            ---
+            ![Pulsar Framework](https://img.shields.io/badge/Pulsar-Framework-7c3aed?style=flat-square)
+            ![Built for FiveM](https://img.shields.io/badge/Built_for-FiveM-F40552?style=flat-square)
+          files: pulsar-polyzone.zip
+          prerelease: false
