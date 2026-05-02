@@ -8,7 +8,7 @@ fx_version("cerulean")
 -- See https://github.com/mkafrin/PolyZone and https://github.com/mkafrin/PolyZone/wiki
 
 description("Define zones of different shapes and test whether a point is inside or outside of the zone")
-version("1.0.0")
+version "1.0.1"
 
 client_scripts({
   "client.lua",
